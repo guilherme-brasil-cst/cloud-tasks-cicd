@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 IMAGE="${1:?Provide image name as first argument}"
-# Classroom version: image package must be PUBLIC in GHCR for anonymous docker pull.
+# Pacote GHCR privado: o CD faz docker login com token efemero antes de executar este script.
 case "$IMAGE" in ghcr.io/*:*) ;; *) echo "Invalid image reference" >&2; exit 1;; esac
 docker volume create cloud-tasks-data >/dev/null
 docker pull "$IMAGE"
