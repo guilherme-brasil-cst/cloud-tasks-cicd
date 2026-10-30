@@ -37,3 +37,47 @@ def test_mark_done(client):
 
 def test_not_found(client):
     assert client.patch("/tasks/999", json={"done": True}).status_code == 404
+
+
+# --- DELETE /tasks/<id> ---
+
+def test_delete_existing_task_returns_204(client):
+    item = client.post("/tasks", json={"title": "Remover"}).json
+    result = client.delete(f'/tasks/{item["id"]}')
+    assert result.status_code == 204
+    assert result.data == b""
+    assert client.get("/tasks").json == []
+
+
+def test_delete_missing_task_returns_404(client):
+    assert client.delete("/tasks/999").status_code == 404
+
+
+def test_delete_twice_returns_404_second_time(client):
+    item = client.post("/tasks", json={"title": "Uma vez"}).json
+    assert client.delete(f'/tasks/{item["id"]}').status_code == 204
+    assert client.delete(f'/tasks/{item["id"]}').status_code == 404
+
+
+# --- Melhorias: /version e filtro por situacao ---
+
+def test_version_reports_configured_value(tmp_path):
+    app = create_app({"TESTING": True, "DATABASE": str(tmp_path / "v.db"), "APP_VERSION": "abc123"})
+    result = app.test_client().get("/version")
+    assert result.status_code == 200
+    assert result.json == {"service": "cloud-tasks-api", "version": "abc123"}
+
+
+def test_filter_tasks_by_status(client):
+    first = client.post("/tasks", json={"title": "Feita"}).json
+    client.post("/tasks", json={"title": "Pendente"})
+    client.patch(f'/tasks/{first["id"]}', json={"done": True})
+    done = client.get("/tasks?done=true").json
+    pending = client.get("/tasks?done=false").json
+    assert [t["title"] for t in done] == ["Feita"]
+    assert [t["title"] for t in pending] == ["Pendente"]
+    assert len(client.get("/tasks").json) == 2
+
+
+def test_filter_rejects_invalid_value(client):
+    assert client.get("/tasks?done=talvez").status_code == 400
