@@ -22,6 +22,8 @@ Computação em Nuvem
 | Prova de persistência | https://github.com/guilherme-brasil-cst/cloud-tasks-cicd/actions/runs/41686230429 |
 | Segundo deploy automático (merge do PR #3, documentação) | https://github.com/guilherme-brasil-cst/cloud-tasks-cicd/actions/workflows/cd.yml |
 | Todos os CDs | https://github.com/guilherme-brasil-cst/cloud-tasks-cicd/actions/workflows/cd.yml |
+| Testes manuais em produção | docs/TESTES_PRODUCAO.md |
+| Roteiro da apresentação e encerramento | docs/APRESENTACAO.md |
 
 ## 2. Arquitetura
 
@@ -166,5 +168,5 @@ Além disso, o runner é removido em *Settings → Actions → Runners*.
 | Integrante | Responsabilidades |
 |---|---|
 | Guilherme Brasil | Infraestrutura AWS (EC2, Security Group, IP elástico, runner), workflows de CI/CD, implementação das rotas e testes, deploy |
-| Gabriel Rodrigues | Revisão do PR #3 (documentação) e conferência dos testes e das rotas da API em produção |
-| Gabriel Gonçalves | Revisão do PR #3 (relatório) e conferência das evidências de CI/CD, persistência e custos |
+| Gabriel Rodrigues | Testes manuais da API em produção, execução da prova de persistência (docs/TESTES_PRODUCAO.md) e revisão do PR de apresentação |
+| Gabriel Gonçalves | Roteiro da apresentação, checklist de encerramento dos recursos AWS (docs/APRESENTACAO.md) e revisão do PR de testes em produção |
