@@ -19,8 +19,9 @@ Computação em Nuvem
 | CI aprovada em PR | https://github.com/guilherme-brasil-cst/cloud-tasks-cicd/actions/runs/41054533509 |
 | CI na `main` com publicação no GHCR | https://github.com/guilherme-brasil-cst/cloud-tasks-cicd/actions/runs/41055686405 |
 | CD aprovado (deploy + `/health` + `/version`) | https://github.com/guilherme-brasil-cst/cloud-tasks-cicd/actions/runs/41055796337 |
-| Prova de persistência | {{LINK_RUN_PERSISTENCIA}} |
-| Segundo deploy automático (PR de documentação) | {{LINK_RUN_CD_2}} |
+| Prova de persistência | https://github.com/guilherme-brasil-cst/cloud-tasks-cicd/actions/runs/41686230429 |
+| Segundo deploy automático (merge do PR #3, documentação) | https://github.com/guilherme-brasil-cst/cloud-tasks-cicd/actions/workflows/cd.yml |
+| Todos os CDs | https://github.com/guilherme-brasil-cst/cloud-tasks-cicd/actions/workflows/cd.yml |
 
 ## 2. Arquitetura
 
@@ -119,11 +120,19 @@ O job `deploy` rodou no runner `ec2-cloud-tasks` e o `verify-public` em um runne
 
 **Persistência após recriar o contêiner** (workflow *Prova de persistencia*):
 
+Run 41686230429, executado em 03/11 depois que a instância foi religada por uma nova sessão do laboratório:
+
 ```
-{{LOG_PERSISTENCIA}}
+Imagem em execucao: ghcr.io/guilherme-brasil-cst/cloud-tasks-cicd:da41b55c43ce2f072432ab9ad05b8093c56fcf5d
+{"done":false,"id":1,"title":"persistencia-20261103T173853Z"}
+--- Recriando o conteiner ---
+Conteiner antigo: d461d370898d | novo: b32bf61417c0
+--- Tarefas apos recriacao ---
+[{"done":false,"id":1,"title":"persistencia-20261103T173853Z"}]
+OK: dados persistiram no volume cloud-tasks-data
 ```
 
-O contêiner é removido (`docker rm -f`) e criado de novo com a mesma imagem e o mesmo volume `cloud-tasks-data`. A tarefa criada antes continua listada em `/tasks`.
+O log também mostra que a instância voltou sozinha depois de ser desligada pelo fim da sessão anterior, já servindo a mesma imagem (`--restart unless-stopped`), e que o runner reconectou ao GitHub como serviço. O contêiner é removido (`docker rm -f`) e criado de novo com a mesma imagem e o mesmo volume `cloud-tasks-data`. A tarefa criada antes continua listada em `/tasks`.
 
 ## 7. Custos e encerramento
 
@@ -156,6 +165,6 @@ Além disso, o runner é removido em *Settings → Actions → Runners*.
 
 | Integrante | Responsabilidades |
 |---|---|
-| Guilherme Brasil | {{TAREFAS_GUILHERME}} |
-| Gabriel Rodrigues | {{TAREFAS_GABRIEL_RODRIGUES}} |
-| Gabriel Gonçalves | {{TAREFAS_GABRIEL_GONCALVES}} |
+| Guilherme Brasil | Infraestrutura AWS (EC2, Security Group, IP elástico, runner), workflows de CI/CD, implementação das rotas e testes, deploy |
+| Gabriel Rodrigues | Revisão do PR #3 (documentação) e conferência dos testes e das rotas da API em produção |
+| Gabriel Gonçalves | Revisão do PR #3 (relatório) e conferência das evidências de CI/CD, persistência e custos |
