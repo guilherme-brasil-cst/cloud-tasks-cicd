@@ -24,6 +24,7 @@ Computação em Nuvem
 | Todos os CDs | https://github.com/guilherme-brasil-cst/cloud-tasks-cicd/actions/workflows/cd.yml |
 | Testes manuais em produção | docs/TESTES_PRODUCAO.md |
 | Roteiro da apresentação e encerramento | docs/APRESENTACAO.md |
+| Prints da configuração na AWS | [Prints/](../Prints/README.md) |
 
 ## 2. Arquitetura
 
@@ -64,6 +65,8 @@ Fluxo: o desenvolvimento acontece em branches `feature/...`. O PR executa apenas
 | Metadados | IMDSv2 obrigatório |
 | Perfil IAM | `LabInstanceProfile` do Learner Lab, usado para administração via AWS Systems Manager (sem SSH externo) |
 | Bootstrap | `infra/user-data.sh`: instala Docker, cadastra a chave de deploy e cria o usuário do runner |
+
+Os prints da configuração no Console da AWS e no CloudShell estão na pasta [Prints/](../Prints/README.md).
 
 ### Security Group `cloud-tasks-sg`
 
